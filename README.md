@@ -1,2 +1,2 @@
 # projetinho-beta
-Teste
+Para instalaçao do node_modules: npm install
