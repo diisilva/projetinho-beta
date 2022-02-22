@@ -5,12 +5,12 @@ import { validate } from "class-validator";
 import { User } from "../entity/User";
 
 class UserController{
-
+  
 static listAll = async (req: Request, res: Response) => {
   //Get users from database
   const userRepository = getRepository(User);
   const users = await userRepository.find({
-    select: ["id", "username", "role"] //We dont want to send the passwords on response
+    select: ["id"] //We dont want to send the passwords on response
   });
 
   //Send the users object
@@ -24,9 +24,9 @@ static getOneById = async (req: Request, res: Response) => {
   //Get the user from database
   const userRepository = getRepository(User);
   try {
-    const user = await userRepository.findOneOrFail(id, {
-      select: ["id", "username", "role"] //We dont want to send the password on response
-    });
+    // const user = await userRepository.findOneOrFail(id, {
+    //   select: ["id", "username", "role"] //We dont want to send the password on response
+    // });
   } catch (error) {
     res.status(404).send("User not found");
   }
@@ -34,11 +34,12 @@ static getOneById = async (req: Request, res: Response) => {
 
 static newUser = async (req: Request, res: Response) => {
   //Get parameters from the body
+  console.log("BODY", res);
   let { username, password, role } = req.body;
   let user = new User();
-  user.username = username;
-  user.password = password;
-  user.role = role;
+  // user.username = username;
+  // user.password = password;
+  // user.role = role;
 
   //Validade if the parameters are ok
   const errors = await validate(user);
@@ -48,7 +49,7 @@ static newUser = async (req: Request, res: Response) => {
   }
 
   //Hash the password, to securely store on DB
-  user.hashPassword();
+  // user.hashPassword();
 
   //Try to save. If fails, the username is already in use
   const userRepository = getRepository(User);
