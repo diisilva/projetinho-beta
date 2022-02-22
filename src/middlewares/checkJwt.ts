@@ -24,7 +24,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     expiresIn: "1h"
   });
   res.setHeader("token", newToken);
-
+  console.log("TOKEN", newToken);
   //Call the next middleware or controller
   next();
 };

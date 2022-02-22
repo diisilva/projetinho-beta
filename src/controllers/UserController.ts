@@ -5,7 +5,7 @@ import { validate } from "class-validator";
 import { User } from "../entity/User";
 
 class UserController{
-  
+
 static listAll = async (req: Request, res: Response) => {
   //Get users from database
   const userRepository = getRepository(User);
@@ -25,7 +25,7 @@ static getOneById = async (req: Request, res: Response) => {
   const userRepository = getRepository(User);
   try {
     // const user = await userRepository.findOneOrFail(id, {
-    //   select: ["id", "username", "role"] //We dont want to send the password on response
+      select: ["id", "username"] //We dont want to send the password on response
     // });
   } catch (error) {
     res.status(404).send("User not found");
@@ -34,12 +34,12 @@ static getOneById = async (req: Request, res: Response) => {
 
 static newUser = async (req: Request, res: Response) => {
   //Get parameters from the body
-  console.log("BODY", res);
-  let { username, password, role } = req.body;
+  // console.log("BODY", res);
+  let { username, password, age } = req.body;
   let user = new User();
-  // user.username = username;
-  // user.password = password;
-  // user.role = role;
+  user.username = username;
+  user.password = password;
+  user.age = age;
 
   //Validade if the parameters are ok
   const errors = await validate(user);

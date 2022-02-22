@@ -16,7 +16,9 @@ router.get(
 );
 
 //Create a new user
-router.post("/", [checkJwt], UserController.newUser);
+router.post("/", 
+// [checkJwt], 
+UserController.newUser);
 
 //Edit one user
 router.patch(
