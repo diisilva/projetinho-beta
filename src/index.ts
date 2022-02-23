@@ -1,59 +1,39 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import {Request, Response} from "express";
-import {Routes} from "./routes";
-import {User} from "./entity/User";
+import express, { Application } from "express";
+import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
 
-createConnection({
-    type: "postgres",
-    host: "172.17.0.3",
-    port: 5432,
-    username: "projetinho",
-    password: "projetinho",
-    database: "projetinho",
-    //entities: ["build/database/entities/**/*.js"],
-    entities: ["entity/*.ts"],
-    synchronize: true,
-    name: "projetinho"
-    }).then(async connection => {
+import Router from "./routes";
+import dbConfig from './config/database'
 
-    // create express app
-    const app = express();
-    app.use(bodyParser.json());
+const PORT = process.env.PORT || 3000;
 
-    // register express routes from defined application routes
-    Routes.forEach(route => {
-        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            const result = (new (route.controller as any))[route.action](req, res, next);
-            if (result instanceof Promise) {
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
+const app: Application = express();
 
-            } else if (result !== null && result !== undefined) {
-                res.json(result);
-            }
-        });
-    });
+app.use(express.json());
+app.use(morgan("tiny"));
+app.use(express.static("public"));
 
-    // setup express app here
-    // ...
+app.use(
+  "",
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: "/swagger.json",
+    },
+  })
+);
 
-    // start express server
-    app.listen(3000);
+app.use(Router);
 
-    // insert new users for test
-    /* await connection.manager.save(connection.manager.create(User, {
-        firstName: "Timber",
-        lastName: "Saw",
-        age: 27
-    }));
-    await connection.manager.save(connection.manager.create(User, {
-        firstName: "Phantom",
-        lastName: "Assassin",
-        age: 24
-    })); */
+createConnection(dbConfig).then(_connection => {
+  console.log(_connection)
+  app.listen(PORT, () => {
+    console.log("Server is running on port", PORT);
+  });
+}).catch(err => {
+  console.log("Unable to connect to db", err);
+  process.exit(1)
+})
 
-    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
-
-}).catch(error => console.log(error));

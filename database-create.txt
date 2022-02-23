@@ -1,1 +1,0 @@
-docker run -d -p 5433:5432 --name projetinho -e POSTGRES_USER=projetinho -e POSTGRES_PASSWORD=projetinho --mount src=db-projetinho,dst=/var/lib/postgresql/data postgres

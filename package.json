@@ -1,49 +1,57 @@
 {
-  "name": "projetinho-diego",
-  "version": "0.0.1",
-  "description": "Projetinho Diego",
-  "type": "commonjs",
-  "devDependencies": {
-    "@types/node": "^16.11.10",
-    "nodemon": "^2.0.15",
-    "ts-node": "10.4.0",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "4.5.2"
-  },
-  "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/body-parser": "^1.19.2",
-    "@types/cors": "^2.8.12",
-    "@types/helmet": "^4.0.0",
-    "@types/jsonwebtoken": "^8.5.8",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.1",
-    "class-validator": "^0.13.2",
-    "cors": "^2.8.5",
-    "express": "^4.17.2",
-    "helmet": "^5.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.14.1",
-    "pg": "^8.7.3",
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "0.2.43"
-  },
-  "scripts": {
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "tsc": "tsc",
-    "start": "set debug=* &&  npx ts-node-dev --respawn --transpile-only --debug ./src/index.ts",
-    "prod": "tsc && node ./dist/app.js",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
-  },
+  "name": "projetinho_diego",
+  "version": "1.1.1",
+  "description": "",
   "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "predev": "npm run swagger",
+    "prebuild": "npm run swagger",
+    "build": "tsc",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec\"",
+    "swagger": "tsoa spec",
+    "test": "jest"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/diisilva/projetinho-beta.git"
+    "url": "git+https://github.com/rsbh/express-typescript.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/diisilva/projetinho-beta/issues"
+    "url": "https://github.com/rsbh/express-typescript/issues"
   },
-  "homepage": "https://github.com/diisilva/projetinho-beta#readme"
+  "homepage": "https://github.com/rsbh/express-typescript#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.8",
+    "@types/faker": "^5.1.5",
+    "@types/jest": "^26.0.19",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.11.2",
+    "@types/swagger-ui-express": "^4.1.2",
+    "concurrently": "^7.0.0",
+    "faker": "^5.1.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "swagger-ui-express": "^4.1.4",
+    "tsoa": "^3.2.1",
+    "typeorm": "^0.2.29"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/index.ts"
+  }
 }
